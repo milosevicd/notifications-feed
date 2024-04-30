@@ -1,10 +1,6 @@
-from flask import Blueprint, jsonify
-from app.models.like import Like
-from app.models.post import Post, PostWithLikeSchema, PostWithCommentSchema
-from app.models.comment import Comment, CommentSchema
-from app.models.user import User, UserSchema
+from flask import Blueprint
+from app.services import posts_service
 from app.utils.db import db
-from sqlalchemy.orm import joinedload
 
 routes_api = Blueprint('routes_api', __name__)
 
@@ -20,13 +16,6 @@ def get_aggregate_notifications():
         200:
             description: A JSON object with the notifications aggregated by posts
     """
+
+    return posts_service.get_aggregate_notifications()
     
-    # retrieve posts, joined with comments and users that commented
-    posts_and_comments = Post.query.options(joinedload(Post.comments).joinedload(Comment.user)).all()
-
-    # retrieve posts, joined with likes and users that liked
-    posts_and_likes = Post.query.options(joinedload(Post.likes).joinedload(Like.user)).all()
-
-    # return a joined list of posts with comments and posts with likes
-    return PostWithCommentSchema(many=True).dump(posts_and_comments) + PostWithLikeSchema(many=True).dump(posts_and_likes)
-

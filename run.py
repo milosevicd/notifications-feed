@@ -1,3 +1,4 @@
+from app.utils.db import db
 from app.utils.app_factory import create_app
 from app.utils.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from app.utils.load_db import process_json_to_db
@@ -14,6 +15,9 @@ if __name__ == '__main__':
         app = create_app(DevelopmentConfig)
 
         with app.app_context():
+            # clear all data from the database and re-create it from the JSON file
+            db.drop_all()
+            db.create_all()
             process_json_to_db()
 
     app.run()

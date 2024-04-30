@@ -23,27 +23,37 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
+            background-color: grey;
         }
     </style>
     <script src="static/parse_notifications.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch notifications JSON from API, parse and add to table
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', '{{ api_url }}', true);
+            xhr.onload = function() {
+                table = document.querySelector('table tbody');
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    var notifications = JSON.parse(xhr.responseText);
+                    addNotificationRows(notifications, table);                        
+                } else {
+                    console.log('ERROR: API request threw an error');
+                    const cell = table.insertRow().insertCell();
+                    cell.innerHTML = 'Failed to fetch notifications';            
+                }
+            };
+            xhr.onerror = function () {
+                console.log('ERROR: Request to the API failed');
+            };
+            xhr.send();
+        }, false);
+    </script>
 </head>
 <body>
     <h1>Notifications</h1>
     <table>
         <tbody>
-            <script>
-                // Fetch notifications JSON from API
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', '{{ api_url }}', true);
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        var notifications = JSON.parse(xhr.responseText);
-                        addNotificationRows(notifications, document.querySelector('table'));                        
-                        return;
-                    }
-                };
-                xhr.send();
-            </script>
         </tbody>
     </table>
 </body>

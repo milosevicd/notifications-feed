@@ -28,11 +28,6 @@ def create_app(config):
     # Initialize the database
     db.init_app(app)
 
-    with app.app_context():
-        # clear all data from the database
-        db.drop_all()
-        db.create_all()
-
     logging.info("App created successfully")
 
     return app

@@ -8,21 +8,25 @@ from app.models.like import Like
 from app.utils.db import db
 import secrets
 
+# read avatar from file
+def read_avatar(avatar):
+    if not avatar:
+        return None
+    avatar_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'db_init_data/avatars', avatar)
+    if os.path.exists(avatar_path):
+        with open(avatar_path, 'rb') as file:
+            return file.read()
+    return None
+
 # Add or update user (assume that the first item in the JSON data is the correct user, and ignore any subsequent user data)
 def get_or_create_user(user_data):
     user = User.query.filter_by(id=user_data['id']).first()
     
     if not user:
         logging.debug(f'Creating user {user_data["id"]}')
-        avatar = user_data.get('avatar', None)
-        avatar_data = None
-        # if the avatar is not None, load it from avatars folder
-        # TODO: remove False and
-        if avatar is not None: 
-            avatar_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'db_init_data/avatars', avatar)
-            if os.path.exists(avatar_path):
-                with open(avatar_path, 'rb') as file:
-                    avatar_data = file.read()
+        
+        # if the avatar is specified for the user, load it from avatars folder
+        avatar_data = read_avatar(user_data.get('avatar', None))
         
         user = User(id=user_data['id'], name=user_data.get('name', ''), avatar=avatar_data)
 
@@ -40,7 +44,6 @@ def get_or_create_post(post_data):
     return post
 
 def process_json_to_db():
-
     # Construct the full path to the JSON file
     logging.info('Loading JSON data to database')
     dir_path = os.path.dirname(os.path.realpath(__file__))
