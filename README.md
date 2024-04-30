@@ -20,13 +20,32 @@ Single web page is available at /notifications.html that contains a simple HTML 
 - [Usage](#usage)
 - [Running tests](#running-tests)
 
+## Requirements
+
+Python >= 3.3
+
+OR
+
+Python < 3.3 with venv module installed (`pip install virtualenv`)
+
 ## Installation
 
+Windows:
 ```
 git clone https://github.com/milosevicd/notifications-feed.git
 cd notifications-feed
 python -m venv nfd_venv
-nfd_venv\Scripts\activate.bat (linux: source nfd_venv/bin/activate)
+nfd_venv\Scripts\activate.bat
+pip install -r requirements.txt
+python -m run
+```
+
+Linux:
+```
+git clone https://github.com/milosevicd/notifications-feed.git
+cd notifications-feed
+python -m venv nfd_venv
+source nfd_venv/bin/activate
 pip install -r requirements.txt
 python -m run
 ```
