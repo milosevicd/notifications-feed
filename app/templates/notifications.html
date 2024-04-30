@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            font-family: Arial, sans-serif;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+    </style>
+    <script src="static/parse_notifications.js"></script>
+</head>
+<body>
+    <h1>Notifications</h1>
+    <table>
+        <tbody>
+            <script>
+                // Fetch notifications JSON from API
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', '{{ api_url }}', true);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var notifications = JSON.parse(xhr.responseText);
+                        addNotificationRows(notifications, document.querySelector('table'));                        
+                        return;
+                    }
+                };
+                xhr.send();
+            </script>
+        </tbody>
+    </table>
+</body>
+</html>
