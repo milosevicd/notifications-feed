@@ -18,16 +18,26 @@ Single web page is available at /notifications.html that contains a simple HTML 
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Running tests](#running-tests)
 
 ## Installation
 
+```
 git clone https://github.com/milosevicd/notifications-feed.git
 cd notifications-feed
-virtualenv venv
-source venv/bin/activate
+python -m venv nfd_venv
+nfd_venv\Scripts\activate.bat (linux: source nfd_venv/bin/activate)
 pip install -r requirements.txt
-python -m run 
+python -m run
+```
 
 ## Usage
 
 Go to [local Swagger](http://127.0.0.1:5000/swagger/) to play with the API or to [local webpage](http://127.0.0.1:5000/notifications.html) to see the notifications formatted in a table.
+
+## Running tests
+
+After installation, you can run the tests:
+```
+python -m pytest
+```
