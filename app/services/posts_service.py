@@ -4,7 +4,7 @@ from app.models.comment import Comment
 from sqlalchemy.orm import joinedload
 
 # Retrieve all posts with comments and likes
-def get_aggregate_notifications():
+def get_aggregate_notifications() -> list[dict]:
     
     # retrieve posts, joined with comments and users that commented
     posts_and_comments = Post.query.options(joinedload(Post.comments).joinedload(Comment.user)).all()
